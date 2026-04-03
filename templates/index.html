@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Resume Screening System</title>
+
+    <!-- 🔗 Link to external CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <h2>📄 Resume Screening System</h2>
+
+    <!-- FORM -->
+    <form method="POST" enctype="multipart/form-data">
+        <label><b>Job Description:</b></label><br>
+        <textarea name="jd" rows="6" placeholder="Enter Job Description..." required></textarea><br>
+
+        <label><b>Upload Resumes (PDF):</b></label><br>
+        <input type="file" name="cv_files" multiple required><br><br>
+
+        <button type="submit">Analyze</button>
+    </form>
+
+    <div class="container">
+
+        <!-- 🏆 TOP CANDIDATE -->
+        {% if top_candidate %}
+        <div class="card top-card">
+            <h3>🏆 Top Candidate</h3>
+            <p><b>Name:</b> {{ top_candidate.name }}</p>
+            <p><b>Score:</b> {{ top_candidate.score }}%</p>
+            <p><b>{{ top_candidate.result }}</b></p>
+        </div>
+        {% endif %}
+
+        <!-- 📊 DASHBOARD -->
+        {% if results %}
+        <div class="dashboard">
+            <div>
+                <h4>Total Resumes</h4>
+                <p>{{ total_resumes }}</p>
+            </div>
+
+            <div>
+                <h4>Average Score</h4>
+                <p>{{ average_score }}%</p>
+            </div>
+
+            <div>
+                <h4>Top Score</h4>
+                <p>{{ top_candidate.score }}%</p>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- 📋 RESULTS -->
+        {% if results %}
+            <h2>📋 Candidates</h2>
+
+            {% for r in results %}
+            <div class="card">
+                <h3>{{ r.name }}</h3>
+                <p><b>Score:</b> {{ r.score }}%</p>
+                <p><b>{{ r.result }}</b></p>
+
+                <p><b>✅ Matching Skills:</b> {{ r.matched }}</p>
+                <p><b>❌ Missing Skills:</b> {{ r.missing }}</p>
+            </div>
+            {% endfor %}
+        {% endif %}
+
+    </div>
+
+</body>
+</html>
